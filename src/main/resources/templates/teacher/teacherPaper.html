@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>studentCenter</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="../../static/css/bootstrap-theme.min.css" rel="stylesheet"/>
+    <link href="../../static/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="shortcut icon" href="../../static/img/book.ico" type="image/x-icon"/>
+    <script src="../../static/js/jquery-1.11.0.js"></script>
+    <script src="../../static/js/bootstrap.js"></script>
+</head>
+<body>
+<div style="height:80px;background-color: #337AB7;position: relative;left: 0;top: 0;">
+    <span style="font-style: italic;font-size: 30px;color: white;position: absolute;top: 25%;left: 3%;">线上考试系统</span>
+    <span style="font-style: italic;font-size: 20px;color: white;position: absolute;top: 50%;right: 3%;">(created by wupeng)</span>
+</div>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand">线上考试系统</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="#">首页 <span class="sr-only">(current)</span></a></li>
+                <li ><a href="#">考生信息管理</a></li>
+                <li ><a href="#">考生成绩查询</a></li>
+                <li class="active"><a href="#">试卷管理</a></li>
+                <li><a href="#">题目管理</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a>欢迎用户:</a></li>
+                <li><a href="/">wp</a></li>
+                <li><a href="/layout">退出系统</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!--内容-->
+
+
+<br><br>
+<div>
+   <span style="padding-left: 84%"> <a href="addPaper.html"><button  class="btn btn-success">添加试卷</button></a></span>
+    <table id="stuTable" class="table table-hover table-bordered" style="text-align: center;margin:0 auto; width: 80%;">
+        <tr>
+            <th style="text-align: center;height: 100%;line-height: 100%;">试卷名称</th>
+            <th style="text-align: center;height: 100%;line-height: 100%;">试卷分值</th>
+            <th style="text-align: center;height: 100%;line-height: 100%;">题目数量</th>
+            <th style="text-align: center;height: 100%;line-height: 100%;">考试时长</th>
+            <th style="text-align: center;height: 100%;line-height: 100%;">出卷老师</th>
+            <th style="text-align: center;height: 100%;line-height: 100%;">操作</th>
+        </tr>
+        <tr th:each="c:${page.data}">
+            <td th:text="${c.name}"></td>
+            <td th:text="${c.mark}"></td>
+            <td th:text="${c.number}"></td>
+            <td th:text="${c.time}+'分钟'"></td>
+            <td th:text="${c.s_mark}"></td>
+            <td>
+                <button type="button" class="btn btn-danger" th:value="${c.id}" onclick="btn1(this.value)">删除试卷</button>
+            </td>
+        </tr>
+    </table>
+    <br><br>
+    <div style="margin:0 auto;padding-left:45% ">
+        <!--分页-->
+        <ul class="pagination">
+            <!--前一页-->
+            <li><a th:href="@{/teacher/grade(start=1)}">&laquo;</a></li>
+            <td th:each="p:${page.integers}"  th:switch = "${page.currentPage}eq ${p}">
+                <li  th:case="true" class="active">
+                    <!-- 这个是当前页-->
+                    <a th:href="@{/teacher/grade(start=${p})}" th:text="${p}">1</a>
+                </li>
+                <li  th:case="false">
+                    <!-- 这个是不是当前页-->
+                    <a th:href="@{/teacher/grade(start=${p})}" th:text="${p}">1</a>
+                </li>
+            </td>
+            <!--后一页-->
+            <li><a th:href="@{/teacher/grade(start=${page.getTotalPage()})}">&raquo;</a></li>
+        </ul>
+    </div>
+</div>
+</div>
+<script>
+
+</script>
+
+<!--底部版权栏-->
+<br><br><br><br><br><br><br><br>
+<hr>
+<table border="0" align="center">
+    <tr>
+        <td align="center">版权所有:wupeng</td>
+        <td align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Copyright@2019</td>
+    </tr>
+</table>
+</body>
+</html>

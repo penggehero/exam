@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Bootstrap -->
+    <link href="../../static/css/bootstrap-theme.min.css" rel="stylesheet"/>
+    <link href="../../static/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="shortcut icon" href="/static/img/book.ico" type="image/x-icon"/>
+    <script src="../../static/js/jquery-3.2.1.min.js"></script>
+    <script src="../../static/js/bootstrap.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand">线上考试系统</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">首页 <span class="sr-only">(current)</span></a></li>
+                <li><a href="#">开始考试</a></li>
+                <li><a href="#">考试情况</a></li>
+                <li><a href="#">个人信息修改</a></li>
+              <!--  <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">下拉键1 <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">下拉功能1</a></li>
+                        <li><a href="#">下拉功能2</a></li>
+                        <li><a href="#">下拉功能3</a></li>
+                    </ul>
+                </li>-->
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/">wp</a></li>
+                <li><a href="/layout">退出</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div style="text-align: center">
+    <h1>距离考试介绍还有</h1>
+    <div class="time-item" style="font-size: 25px">
+            <strong id="hour_show">0时</strong>
+            <strong id="minute_show">0分</strong>
+            <strong id="second_show">0秒</strong>
+    </div>
+    <div id="result">
+
+    </div>
+    <button  class="btn btn-info" onclick="btn()">加载</button>
+</div>
+<!--<script>
+    var a="1564141320000";
+    $.ajax({
+        url: "/student/getTime",
+        type: "POST",
+        dataType: "json",
+        async: false,
+        cache: false,
+        success: function (data) {
+            a = data.msg.toString();
+        },
+        error: function (data) {
+            alert("发生未知错误!");
+        }
+    });
+    var time = parseInt(a) - Date.parse(new Date());
+    var intDiff = parseInt(time / 1000);//倒计时总秒数量
+    function timer(intDiff) {
+        window.setInterval(function () {
+            var day = 0,
+                hour = 0,
+                minute = 0,
+                second = 0;//时间默认值
+            if (intDiff <= 0) {
+                alert("考试已经结束!");
+                window.location.replace("/stdunt");
+            }
+            if (intDiff > 0) {
+                day = Math.floor(intDiff / (60 * 60 * 24));
+                hour = Math.floor(intDiff / (60 * 60)) - (day * 24);
+                minute = Math.floor(intDiff / 60) - (day * 24 * 60) - (hour * 60);
+                second = Math.floor(intDiff) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
+            }
+            if (minute <= 9) minute = '0' + minute;
+            if (second <= 9) second = '0' + second;
+            $('#hour_show').html('<s id="h"></s>' + hour + '时');
+            $('#minute_show').html('<s></s>' + minute + '分');
+            $('#second_show').html('<s></s>' + second + '秒');
+            intDiff&#45;&#45;;
+        }, 1000);
+
+    }
+    $(function () {
+        timer(intDiff);
+    });
+
+    function btn() {
+        $("#result").load("/haha");
+    }
+
+</script>-->
+</body>
+</html>

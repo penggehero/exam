@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>studentCenter</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="../../static/css/bootstrap-theme.min.css" rel="stylesheet"/>
+    <link href="../../static/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="shortcut icon" href="../../static/img/book.ico" type="image/x-icon"/>
+    <script src="../../static/js/jquery-1.11.0.js"></script>
+    <script src="../../static/js/bootstrap.js"></script>
+</head>
+<body>
+<div style="height:80px;background-color: #337AB7;position: relative;left: 0;top: 0;">
+    <span style="font-style: italic;font-size: 30px;color: white;position: absolute;top: 25%;left: 3%;">线上考试系统</span>
+    <span style="font-style: italic;font-size: 20px;color: white;position: absolute;top: 50%;right: 3%;">(created by wupeng)</span>
+</div>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand">线上考试系统</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="#">首页 <span class="sr-only">(current)</span></a></li>
+                <li ><a href="#">考生信息管理</a></li>
+                <li><a href="#">考生成绩查询</a></li>
+                <li class="active"><a href="#">试卷管理</a></li>
+                <li><a href="#">题目管理</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a>欢迎用户:</a></li>
+                <li><a href="/">wp</a></li>
+                <li><a href="/layout">退出系统</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!--内容-->
+<form id="myForm" class="form-horizontal" action="/teacher/fileUpload" method="post"  enctype="multipart/form-data" >
+    <div class="form-group">
+        <label for="name" class="col-sm-3 control-label">试卷名称:</label>
+        <div class="col-sm-6">
+            <input class="form-control" name="name" id="name" th:value="${name}" placeholder="请输入试卷名称">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="time" class="col-sm-3 control-label">考试时长:</label>
+        <div class="col-sm-6">
+            <input class="form-control" type="number" th:value="${time}" name="time" id="time" placeholder="请输入考试时长(分钟)">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="teacher" class="col-sm-3 control-label">出卷人姓名:</label>
+        <div class="col-sm-6">
+            <input class="form-control" name="teacher" th:value="${teacher}" id="teacher" placeholder="请输入出卷人姓名">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="download" class="col-sm-3 control-label"></label>
+        <span class="glyphicon glyphicon-download-alt" aria-hidden="true">
+             <a id="download" href="/teacher/download?filename=template.xls"><label>题目模板下载</label></a>
+        </span>
+        <br>  <br>  <br>
+        <div class="form-group form-inline">
+            <label for="file-zh" class="col-sm-3 control-label">题目导入</label>
+            <div name="Form2" class="col-sm-6" style="text-align: center">
+                <input id="file-zh"  name="files" type="file"  />
+            </div>
+        </div>
+
+    </div>
+
+    <div class="form-group" style="text-align: center">
+        <button type="reset" class="btn btn-success" onclick="back()">返回</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="submit" class="btn btn-info">提交</button>
+    </div>
+</form>
+
+
+<!--底部版权栏-->
+<br><br><br><br><br><br><br><br>
+<hr>
+<table border="0" align="center">
+    <tr>
+        <td align="center">版权所有:wupeng</td>
+        <td align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Copyright@2019</td>
+    </tr>
+</table>
+
+<script th:inline="javascript" type="text/javascript">
+    var msg = [[${msg}]];
+    var reason = [[${reason}]];
+    if (msg==='fail'){
+        alert("文件解析失败!原因:"+reason.toString());
+    }else if (msg==='succeed'){
+        alert("出卷成功!");
+    }
+
+
+
+ /*   function btn() {
+        $('#file-zh').fileinput({
+            language: 'zh', //设置语言
+            uploadUrl: '/teacher/fileUpload', //上传的地址
+            allowedFileExtensions : ['xlsx', 'xls'],//接收的文件后缀
+            showUpload: false, //是否显示上传按钮
+            showCaption: false,//是否显示标题
+        });
+    }*/
+
+    function back() {
+        if (id === null) {
+            id = '';
+        }
+        window.location.href = "/teacher/manage?id=" + id + "&name=" + name;
+    }
+</script>
+
+</body>
+</html>

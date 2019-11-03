@@ -1,0 +1,114 @@
+﻿/*login的基本属性*/
+.body_login {
+	background-position: center center;
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+	background-color: #166188;
+}
+
+/*定位层上下居中*/
+
+.login_middle_center{position:absolute;top:50%; left:50%;margin:-306px 0 0 -500px;}
+
+
+/*背景图片设置*/
+.login_bj{background-image: url(../images/login/login.png);
+	background-position: left top;
+	background-repeat: no-repeat;
+	height: 684px;
+	width: 1000px;
+}
+
+/*logo和标题区域定位*/
+.login_bj_top{text-align:left;width:1000px;padding-top:5px;position: fixed;}/*position: fixed;定位用到了透明，这个起到了关键作用*/
+
+/*下面输入框区域定位*/
+.login_bj_main{padding-top:320px;padding-left:540px;text-align:left;width:1000px;position: fixed;}/*position: fixed;定位用到了透明，这个起到了关键作用*/
+
+
+
+/*logo*/
+.login_logo{
+	
+	height: 115px;
+	width: 944px;
+	border:0px;
+	line-height: 30px;
+	text-align: right;
+	padding-top: 24px
+	}
+
+	
+/*项目标题文字设置*/
+.login_bj h1{
+	font-family:Tahoma, Arial, Helvetica, Sans-serif;
+	font-size: 34px; 
+	/*letter-spacing:1px;*/
+	MARGIN: 0px; 
+	color: #ffffff; 
+	/**
+	 * XuYu 2013-10-16
+	 * Don't use behavior ie-css3.htc, 
+	 * the login.ftl will display H1 in wrong position.
+	*/
+	/* BEHAVIOR: url(/greenstyle/ie-css3.htc); */ /*加了这个就能实现css3效果*/
+	text-shadow: 1px 1px 2px #5caee1;/*这个是css3的文字阴影效果*/
+	line-height: 40px;
+	text-align: right;
+	padding-top:10px; 
+
+}
+
+/*项目副标题文字设置英文字体样式*/
+.login_bj h2{
+	font-family:Tahoma, Arial, Helvetica, Sans-serif;
+	font-size: 12px;
+	letter-spacing: 1px;
+	color: #000000;	
+	BEHAVIOR: url(/greenstyle/ie-css3.htc);/*加了这个就能实现css3效果*/
+	text-shadow: 1px 1px 2px  #69b3e4;/*这个是css3的文字阴影效果*/
+	line-height: 30px;
+	text-align: right;
+	font-weight: normal;
+	}
+
+
+/*这里是输入区域的具体设置------------------------------------*/
+
+/*用户名背景*/
+.username_bj{padding-bottom: 15px;background-image:url(../images/login/login_man.png);background-repeat: no-repeat;background-position: top middle;padding-left: 32px;padding-top: 1px;height: 25px;width: 170px;}
+
+/*密码背景*/
+.password_bj{padding-bottom: 15px;background-image:url(../images/login/login_key.png);background-repeat: no-repeat;background-position: top middle;padding-left: 32px;padding-top: 1px;height: 25px;width:170px;}
+
+/*验证码背景*/
+.certCode_bj{padding-bottom: 15px;background-image:url(../images/login/login_code.png);background-repeat:no-repeat;background-position: right middle;height: 25px;width: 170px;padding-left: 32px;padding-top: 1px;}
+
+/*ok按钮背景*/
+.ok_bj{padding-bottom: 15px;padding-left: 0px;height: 25px;width: 170px;}
+
+/*输入框input设置*/
+.input_text_w{font-family:Tahoma, Arial, Helvetica, Sans-serif;font-weight: normal;font-size:14px;color:#389ad6;}
+
+/*输入区域按钮设置*/
+.login_ok{
+	background-image: url(../images/login/login_ok.png);
+	background-repeat: no-repeat;
+	background-position: left bottom;
+	height: 27px;
+	width: 170px;
+	color: #065382;
+	text-align: right;
+	padding-right: 9px;
+	MARGIN: 0px 0px 25px; 
+	FONT-SIZE: 12px; 
+	BEHAVIOR: url(/greenstyle/ie-css3.htc); 
+	text-shadow: 0px 1px 1px #ffffff;
+	}		
+		
+
+
+
+
+
