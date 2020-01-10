@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wp.exam.mapper.LoginMapper">
+
+    <select id="loginTeacher" resultType="map">
+        select
+        id,
+        username,
+        password,
+        name,
+        school,
+        college
+        from
+        t_teacher
+        where username=#{username};
+    </select>
+
+    <select id="loginStudent" resultType="map">
+        select
+        id,
+        username,
+        password,
+        name,
+        age,
+        school,
+        college,
+        major,
+        grade
+        from
+        t_student
+        where username=#{username};
+    </select>
+
+    <select id="loginAdmin" resultType="java.util.Map">
+        select
+        id,
+        username,
+        password
+        from
+        t_admin
+        where username=#{username};
+    </select>
+
+</mapper> 

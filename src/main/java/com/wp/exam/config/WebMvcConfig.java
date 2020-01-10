@@ -1,6 +1,5 @@
 package com.wp.exam.config;
 
-import com.wp.exam.filter.LoginInterceptor;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
