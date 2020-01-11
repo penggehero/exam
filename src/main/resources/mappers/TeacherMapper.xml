@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wp.exam.mapper.TeacherMapper">
+
+    <insert id="addTeacher">
+        insert into t_teacher
+        (id,
+        username,
+        password,
+        name,
+        school,
+        college
+        )
+        values
+        (null,
+        #{username},
+        #{password},
+        #{name},
+        #{school},
+        #{college}
+        );
+    </insert>
+
+    <update id="updateTeacher">
+        UPDATE t_teacher set
+        <if test="username!=null and username!=''">
+            username=#{username},
+        </if>
+        <if test="password!=null and password!=''">
+            password=#{password},
+        </if>
+        <if test="name!=null and name!=''">
+            name=#{name},
+        </if>
+        <if test="school!=null and school!=''">
+            school=#{school},
+        </if>
+        <if test="college!=null and college!=''">
+            college=#{college}
+        </if>
+        WHERE id=#{id};
+    </update>
+
+    <delete id="deleteTeacher">
+        delete from t_teacher
+        where id in
+        <foreach collection="list" item="item" index="index" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="findbyConditions" resultType="java.util.Map">
+        select
+        id,
+        username,
+        password,
+        name,
+        school,
+        college
+        from
+        t_teacher
+        where 1=1
+        <if test="name!=null and name!=''">
+            and name like concat('%', #{name},'%')
+        </if>
+        LIMIT #{start},#{end}
+    </select>
+
+    <select id="findbyConditionsCount" resultType="java.lang.Integer">
+        select
+        count(1)
+        from
+        t_teacher
+        where 1=1
+        <if test="name!=null and name!=''">
+            and name like concat('%', #{name},'%')
+        </if>
+    </select>
+</mapper>

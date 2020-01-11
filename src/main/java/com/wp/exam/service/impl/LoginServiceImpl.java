@@ -7,13 +7,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
 @Service
+@Transactional
 public class LoginServiceImpl implements LoginService {
     private static final Logger log = LoggerFactory.getLogger(LoginServiceImpl.class);
-    private static final String ERRORNAME = "用户名错误!";
+    private static final String ERRORNAME = "用户名错误或者不存在!";
     private static final String ERRORPWD = "密码错误!";
     @Autowired
     private LoginMapper loginMapper;

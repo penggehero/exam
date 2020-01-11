@@ -15,7 +15,7 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
-    private Map<String, Object> result = null;
+    private  Map<String, Object> result=null;
 
     @PostMapping("/login")
     public Map<String, Object> login(@RequestBody Map<String, Object> param) {
@@ -23,7 +23,7 @@ public class LoginController {
             result = loginService.login(param);
         } catch (Exception e) {
             e.printStackTrace();
-            result = ServiceUtil.makeResult(null, "发送未知错误!");
+            result = ServiceUtil.makeResult(null, ServiceUtil.UNKNOWNERROR);
         }
         return result;
     }
