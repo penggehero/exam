@@ -9,7 +9,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/teacher")
 @CrossOrigin
-public class AdminController {
+public class TeacherController {
     private Map<String, Object> result = null;
     @Autowired
     private TeacherService teacherService;
@@ -39,8 +39,7 @@ public class AdminController {
     @PostMapping("/add")
     public Map<String, Object> addArea(@RequestBody Map<String, Object> param) {
         try {
-            teacherService.addTeacher(param);
-            result = ServiceUtil.makeResult(null, null);
+           return teacherService.addTeacher(param);
         } catch (Exception e) {
             e.printStackTrace();
             result = ServiceUtil.makeResult(null, ServiceUtil.UNKNOWNERROR);
@@ -56,8 +55,7 @@ public class AdminController {
     @PutMapping("/delete")
     public Map<String, Object> deleteArea(@RequestBody Map<String, Object> param) {
         try {
-            teacherService.deleteTeacher(param);
-            result = ServiceUtil.makeResult(null, null);
+          return   teacherService.deleteTeacher(param);
         } catch (Exception e) {
             e.printStackTrace();
             result = ServiceUtil.makeResult(null, ServiceUtil.UNKNOWNERROR);
@@ -73,8 +71,7 @@ public class AdminController {
     @PutMapping("/update")
     public Map<String, Object> updateArea(@RequestBody Map<String, Object> param) {
         try {
-            teacherService.updateTeacher(param);
-            result = ServiceUtil.makeResult(null, null);
+           return teacherService.updateTeacher(param);
         } catch (Exception e) {
             e.printStackTrace();
             result = ServiceUtil.makeResult(null, ServiceUtil.UNKNOWNERROR);

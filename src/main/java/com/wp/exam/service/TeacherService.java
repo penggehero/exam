@@ -4,11 +4,11 @@ import java.util.Map;
 
 public interface TeacherService {
 
-    void addTeacher(Map<String, Object> param) throws Exception;
+    Map<String, Object> addTeacher(Map<String, Object> param) throws Exception;
 
-    void deleteTeacher(Map<String, Object> param) throws Exception;;
+    Map<String, Object> deleteTeacher(Map<String, Object> param) throws Exception;;
 
-    void updateTeacher(Map<String, Object> param) throws Exception;;
+    Map<String, Object> updateTeacher(Map<String, Object> param) throws Exception;;
 
     Map<String, Object> findbyConditions(Map<String, Object> param) throws Exception;
 

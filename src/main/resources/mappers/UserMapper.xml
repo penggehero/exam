@@ -43,4 +43,19 @@
         where username=#{username};
     </select>
 
-</mapper> 
+    <select id="check" resultType="java.lang.Integer">
+        select
+        count(1)
+        from t_teacher a, t_student b, t_admin c
+        where c.username=#{username}
+        or b.username=#{username}
+        or a.username=#{username}
+        <if test="school_id!=null and school_id!=''">
+            or b.school_id=#{school_id}
+        </if>
+        <if test="work_id!=null and work_id!=''">
+            or a.work_id=#{work_id}
+        </if>
+    </select>
+
+</mapper>

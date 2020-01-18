@@ -8,4 +8,6 @@ public interface LoginMapper {
     Map<String, Object> loginTeacher(String username);
 
     Map<String, Object> loginStudent(String username);
+
+    int check(Map<String, Object> param);
 }

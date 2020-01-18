@@ -1,5 +1,6 @@
 package com.wp.exam.service.impl;
 
+import com.wp.exam.mapper.LoginMapper;
 import com.wp.exam.mapper.TeacherMapper;
 import com.wp.exam.service.TeacherService;
 import com.wp.exam.util.ServiceUtil;
@@ -17,29 +18,37 @@ import java.util.Map;
 public class TeacherServiceImpl implements TeacherService {
 
     private static final Logger log = LoggerFactory.getLogger(TeacherServiceImpl.class);
+
     @Autowired
     private TeacherMapper teacherMapper;
+    @Autowired
+    private LoginMapper loginMapper;
 
     @Override
-    public void addTeacher(Map<String, Object> param) throws Exception {
+    public Map<String, Object> addTeacher(Map<String, Object> param) throws Exception {
         log.info("addTeacher start ...{}", param);
+        if (loginMapper.check(param) > 0)
+            return ServiceUtil.makeResult(null, "用户名或者工号已经被注册!");
+        log.info("addTeacher addTeacher ...");
         teacherMapper.addTeacher(param);
         log.info("addTeacher end ...");
+        return ServiceUtil.makeResult(null, null);
     }
 
     @Override
-    public void deleteTeacher(Map<String, Object> param) throws Exception {
+    public Map<String, Object> deleteTeacher(Map<String, Object> param) throws Exception {
         log.info("deleteTeacher start ...{}", param);
         teacherMapper.deleteTeacher(param);
         log.info("deleteTeacher end ...");
+        return ServiceUtil.makeResult(null, null);
     }
 
     @Override
-    public void updateTeacher(Map<String, Object> param) throws Exception {
+    public Map<String, Object> updateTeacher(Map<String, Object> param) throws Exception {
         log.info("updateTeacher start ...{}", param);
         teacherMapper.updateTeacher(param);
         log.info("updateTeacher end ...");
-
+        return ServiceUtil.makeResult(null, null);
     }
 
     @Override
@@ -70,4 +79,5 @@ public class TeacherServiceImpl implements TeacherService {
         log.info("findAll end ...");
         return result;
     }
+
 }
