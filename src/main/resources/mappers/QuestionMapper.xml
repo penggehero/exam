@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wp.exam.mapper.QuestionMapper">
+
+    <insert id="importQuestion" useGeneratedKeys="true" keyProperty="id">
+        insert into t_question
+        (id,
+        paper_id,
+        number,
+        name,
+        flag,
+        mark,
+        q_A,
+        q_B,
+        q_C,
+        q_D,
+        answer
+        )
+        values
+        (null ,
+        #{paper_id},
+        #{number},
+        #{name},
+        #{flag},
+        #{mark},
+        #{q_A},
+        #{q_B},
+        #{q_C},
+        #{q_D},
+        #{answer}
+        );
+    </insert>
+
+    <select id="getQuestion" resultType="java.util.Map">
+        select
+        mark,
+        answer
+        from
+        t_question
+        where id=#{id}
+    </select>
+</mapper>

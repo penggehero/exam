@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wp.exam.mapper.PaperMapper">
+
+    <insert id="importPaper" useGeneratedKeys="true" keyProperty="id">
+        insert into t_paper
+        (id,
+        name,
+        mark,
+        number,
+        time,
+        teacher_id,
+        teacher,
+        ext
+        )
+        values
+        (null ,
+        #{name},
+        null,
+        null,
+        #{time},
+        #{teacher_id},
+        #{teacher},
+        null
+        );
+    </insert>
+    <update id="updatePaper">
+        update t_paper
+        set mark=#{mark},number=#{number}
+        where id=#{paper_id}
+    </update>
+
+    <select id="getQuestion" resultType="java.util.Map">
+        select
+        id,
+        paper_id,
+        number,
+        name,
+        flag,
+        mark,
+        q_A,
+        q_B,
+        q_C,
+        q_D
+        from
+        t_question
+        where paper_id=#{paper_id}
+    </select>
+
+    <select id="getTimeAndName" resultType="java.util.Map">
+        select name,time from t_paper
+        where id=#{paper_id}
+    </select>
+
+
+</mapper>

@@ -31,31 +31,33 @@ public class LoginServiceImpl implements LoginService {
     public Map<String, Object> login(Map<String, Object> param) throws Exception {
         log.info("login start ...{}", param);
         //return makeResult(1, null);
-        String username = param.get("username").toString();
+        String  username=param.get("username").toString();;
         String password = param.get("password").toString();
         Map<String, Object> admin = loginMapper.loginAdmin(username);
         if (admin != null) {
             if (admin.get("password").equals(password))
-                return makeResult(1, username,null);
+                return makeResult(1, Integer.valueOf(admin.get("id").toString()), username, null);
             else
-                return makeResult(null,null, ERRORPWD);
+                return makeResult(null, 0, null, ERRORPWD);
         }
         Map<String, Object> teacher = loginMapper.loginTeacher(username);
         if (teacher != null) {
+            username=teacher.get("name").toString();
             if (teacher.get("password").equals(password))
-                return makeResult(2, username,null);
+                return makeResult(2, teacher.get("work_id"), username, null);
             else
-                return makeResult(null,null, ERRORPWD);
+                return makeResult(null, 0, null, ERRORPWD);
         }
         Map<String, Object> student = loginMapper.loginStudent(username);
         if (student != null) {
+            username=student.get("name").toString();
             if (student.get("password").equals(password))
-                return makeResult(3, username,null);
+                return makeResult(3, student.get("school_id").toString(), username, null);
             else
-                return makeResult(null,null, ERRORPWD);
+                return makeResult(null, 0, null, ERRORPWD);
         }
         log.info("login end ...");
-        return makeResult(null,null, ERRORNAME);
+        return makeResult(null, 0, null, ERRORNAME);
     }
 
     /**
@@ -82,19 +84,20 @@ public class LoginServiceImpl implements LoginService {
         return map;
     }
 
-    public static Map<String, Object> makeResult(Object token,Object username ,String errmsg) {
+    public static Map<String, Object> makeResult(Object token,Object id, Object username, String errmsg) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Map<String, Object> result = new HashMap<>();
         if (null == errmsg) {
             result.put("status", 1);
             result.put("token", token);
-            result.put("username",username);
+            result.put("id", id);
+            result.put("username", username);
             result.put("timestamp", format.format(new Date()));
         } else {
             result.put("msg", errmsg);
             result.put("status", 0);
             result.put("token", null);
-            result.put("username",null);
+            result.put("username", null);
             result.put("timestamp", format.format(new Date()));
         }
         return result;
@@ -103,7 +106,7 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public Map<String, Object> logout(Map<String, Object> param) throws Exception {
         Map<String, Object> result = new HashMap<>();
-        result.put("msg","success");
+        result.put("msg", "success");
         return result;
     }
 }

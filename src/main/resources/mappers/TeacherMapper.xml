@@ -36,7 +36,7 @@
         <if test="name!=null and name!=''">
             name=#{name},
         </if>
-        <if test="sex!=null and sex!=''">
+        <if test="sex lt 2">
             sex=#{sex},
         </if>
         <if test="work_id!=null and work_id!=''">
@@ -72,6 +72,9 @@
         <if test="name!=null and name!=''">
             and name like concat('%', #{name},'%')
         </if>
+        <if test="work_id!=null and work_id!=''">
+            and work_id like concat('%', #{work_id},'%')
+        </if>
         LIMIT #{start},#{end}
     </select>
 
@@ -83,6 +86,9 @@
         where 1=1
         <if test="name!=null and name!=''">
             and name like concat('%', #{name},'%')
+        </if>
+        <if test="work_id!=null and work_id!=''">
+            and work_id like concat('%', #{work_id},'%')
         </if>
     </select>
 </mapper>

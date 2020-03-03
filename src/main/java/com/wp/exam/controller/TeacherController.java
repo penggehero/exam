@@ -21,7 +21,7 @@ public class TeacherController {
      * @return
      */
     @GetMapping("/search")
-    public Map<String, Object> findArea(@RequestParam Map<String, Object> param) {
+    public Map<String, Object> search(@RequestParam Map<String, Object> param) {
         try {
             result = ServiceUtil.makeResult(teacherService.findbyConditions(param), null);
         } catch (Exception e) {
@@ -37,7 +37,7 @@ public class TeacherController {
      * @return
      */
     @PostMapping("/add")
-    public Map<String, Object> addArea(@RequestBody Map<String, Object> param) {
+    public Map<String, Object> add(@RequestBody Map<String, Object> param) {
         try {
            return teacherService.addTeacher(param);
         } catch (Exception e) {
@@ -53,7 +53,7 @@ public class TeacherController {
      * @return
      */
     @PutMapping("/delete")
-    public Map<String, Object> deleteArea(@RequestBody Map<String, Object> param) {
+    public Map<String, Object> delete(@RequestBody Map<String, Object> param) {
         try {
           return   teacherService.deleteTeacher(param);
         } catch (Exception e) {
@@ -69,7 +69,7 @@ public class TeacherController {
      * @return
      */
     @PutMapping("/update")
-    public Map<String, Object> updateArea(@RequestBody Map<String, Object> param) {
+    public Map<String, Object> update(@RequestBody Map<String, Object> param) {
         try {
            return teacherService.updateTeacher(param);
         } catch (Exception e) {

@@ -60,7 +60,7 @@ public class TeacherServiceImpl implements TeacherService {
         List<Map<String, Object>> dataList = teacherMapper.findbyConditions(param);
         int total = teacherMapper.findbyConditionsCount(param);
         //打印参数
-        log.info("findArea" + System.getProperty("line.separator") + "dataList={}" + System.getProperty("line.separator") + "total={}", dataList, total);
+        log.info("findbyConditions" + System.getProperty("line.separator") + "dataList={}" + System.getProperty("line.separator") + "total={}", dataList, total);
         //生成结果
         Map<String, Object> result = ServiceUtil.addTotalAndDatalist(dataList, total);
         log.info("findbyConditions end ...");

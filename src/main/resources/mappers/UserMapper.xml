@@ -10,7 +10,8 @@
         username,
         password,
         name,
-        school,
+        sex,
+        work_id,
         college
         from
         t_teacher
@@ -23,8 +24,8 @@
         username,
         password,
         name,
-        age,
-        school,
+        sex,
+        school_id,
         college,
         major,
         grade
