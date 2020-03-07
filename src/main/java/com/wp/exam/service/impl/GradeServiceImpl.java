@@ -1,16 +1,23 @@
 package com.wp.exam.service.impl;
 
+import com.wp.exam.mapper.GradeMapper;
 import com.wp.exam.service.GradeService;
+import com.wp.exam.util.ServiceUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
 @Transactional
 public class GradeServiceImpl implements GradeService {
+
+    @Autowired
+    private GradeMapper gradeMapper;
 
     private static final Logger log = LoggerFactory.getLogger(GradeServiceImpl.class);
 
@@ -36,10 +43,19 @@ public class GradeServiceImpl implements GradeService {
     }
 
     @Override
-    public Map<String, Object> findbyConditions(Map<String, Object> param) throws Exception {
-        log.info("findbyConditions start ...{}", param);
-        log.info("findbyConditions end ...");
-        return null;
+    public Map<String, Object> search(Map<String, Object> param) throws Exception {
+        log.info(" Grade search start ...{}", param);
+        //添加分页配置
+        ServiceUtil.addStartAndEnd(param);
+        //业务逻辑
+        List<Map<String, Object>> dataList = gradeMapper.search(param);
+        int total = gradeMapper.searchCount(param);
+        //打印参数
+        log.info("Grade search" + System.getProperty("line.separator") + "dataList={}" + System.getProperty("line.separator") + "total={}", dataList, total);
+        //生成结果
+        Map<String, Object> result = ServiceUtil.addTotalAndDatalist(dataList, total);
+        log.info("Grade search end ...");
+        return result;
     }
 
     @Override

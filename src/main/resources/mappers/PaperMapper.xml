@@ -54,5 +54,37 @@
         where id=#{paper_id}
     </select>
 
+    <select id="search" resultType="java.util.Map">
+        select id, name, mark, number, time, teacher_id, teacher
+        from t_paper where id not in(select paper_id from t_grade where school_id=#{school_id}) LIMIT #{start},#{end};
+    </select>
+
+    <select id="searchCount" resultType="java.lang.Integer">
+         select count(0)
+        from t_paper where id not in(select paper_id from t_grade where school_id=#{school_id});
+    </select>
+
+    <select id="findByTeacher" resultType="java.util.Map">
+        select id, name, mark, number, time, teacher_id, teacher
+        from t_paper where 1=1
+        <if test="name!=null and name!=''">
+            and name like concat('%', #{name},'%')
+        </if>
+        <if test="teacher!=null and teacher!=''">
+            and teacher like concat('%', #{teacher},'%')
+        </if>
+        LIMIT #{start},#{end};
+    </select>
+
+    <select id="findByTeacherCount" resultType="java.lang.Integer">
+         select count(0)
+        from t_paper where 1=1
+        <if test="name!=null and name!=''">
+            and name like concat('%', #{name},'%')
+        </if>
+        <if test="school_id!=null and school_id!=''">
+            and teacher like concat('%', #{teacher},'%')
+        </if>
+    </select>
 
 </mapper>

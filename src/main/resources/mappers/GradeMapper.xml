@@ -29,4 +29,28 @@
         #{mark}
         );
     </insert>
+
+    <select id="search" resultType="java.util.Map">
+        select id, school_id, student_name, paper_id, paper_name, date, single_mark, double_mark, mark
+        from t_grade where 1=1
+        <if test="school_id!=null and school_id!=''">
+            and school_id like concat('%', #{school_id},'%')
+        </if>
+        <if test="paper_name!=null and paper_name!=''">
+            and paper_name like concat('%', #{paper_name},'%')
+        </if>
+        order by mark
+        LIMIT #{start},#{end};
+    </select>
+
+    <select id="searchCount" resultType="java.lang.Integer">
+        select count(0)
+        from t_grade where 1=1
+        <if test="school_id!=null and school_id!=''">
+            and school_id like concat('%', #{school_id},'%')
+        </if>
+        <if test="paper_name!=null and paper_name!=''">
+            and paper_name like concat('%', #{paper_name},'%')
+        </if>
+    </select>
 </mapper>

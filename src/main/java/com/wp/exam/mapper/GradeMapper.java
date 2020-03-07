@@ -11,7 +11,9 @@ public interface GradeMapper {
 
     void updateGrade(Map<String, Object> param);
 
-    List<Map<String, Object>> findbyConditions(Map<String, Object> param);
+    List<Map<String, Object>> search(Map<String, Object> param);
+
+    int searchCount(Map<String, Object> param);
 
     int findbyConditionsCount(Map<String, Object> param);
 }

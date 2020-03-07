@@ -10,7 +10,7 @@ public interface GradeService {
 
     Map<String, Object> updateGrade(Map<String, Object> param) throws Exception;;
 
-    Map<String, Object> findbyConditions(Map<String, Object> param) throws Exception;
+    Map<String, Object> search(Map<String, Object> param) throws Exception;
 
     Map<String, Object> findAll(Map<String, Object> param) throws Exception;
 }

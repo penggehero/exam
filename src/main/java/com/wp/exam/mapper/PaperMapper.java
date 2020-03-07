@@ -9,7 +9,14 @@ public interface PaperMapper {
 
     void updatePaper(Map<String, Object> param);
 
-    Map<String,Object> search(Map<String, Object> param) throws Exception;
+    List<Map<String, Object>> search(Map<String, Object> param);
+
+    List<Map<String, Object>> findByTeacher(Map<String, Object> param);
+
+    int searchCount(Map<String, Object> param);
+
+    int findByTeacherCount(Map<String, Object> param);
+
 
     List<Map<String, Object>> getQuestion(Map<String, Object> param) throws Exception;
 

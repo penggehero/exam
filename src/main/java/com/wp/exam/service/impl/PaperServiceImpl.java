@@ -209,9 +209,12 @@ public class PaperServiceImpl implements PaperService {
             e.printStackTrace();
             throw e;
         } finally {
-            poifsFileSystem.close();
-            inputStream.close();
-            workbook.close();
+            if (poifsFileSystem != null)
+                poifsFileSystem.close();
+            if (inputStream != null)
+                inputStream.close();
+            if (workbook != null)
+                workbook.close();
         }
         System.out.println("单选题有" + snumber + "道");
         System.out.println("单选题有" + smark + "分");
@@ -231,9 +234,17 @@ public class PaperServiceImpl implements PaperService {
     @Override
     public Map<String, Object> search(Map<String, Object> param) throws Exception {
         log.info("search start ...{}", param);
-
+        //添加分页配置
+        ServiceUtil.addStartAndEnd(param);
+        //业务逻辑
+        List<Map<String, Object>> dataList = paperMapper.search(param);
+        int total = paperMapper.searchCount(param);
+        //打印参数
+        log.info("search" + System.getProperty("line.separator") + "dataList={}" + System.getProperty("line.separator") + "total={}", dataList, total);
+        //生成结果
+        Map<String, Object> result = ServiceUtil.addTotalAndDatalist(dataList, total);
         log.info("search end ...");
-        return null;
+        return result;
     }
 
     @Override
@@ -280,7 +291,23 @@ public class PaperServiceImpl implements PaperService {
         param.put("mark", singleMark + dobleMark);
         gradeMapper.addGrade(param);
         log.info("submit end ...");
-        return null;
+        return ServiceUtil.makeResult(null, null);
+    }
+
+    @Override
+    public Map<String, Object> findByTeacher(Map<String, Object> param) throws Exception {
+        log.info("findByTeacher start ...{}", param);
+        //添加分页配置
+        ServiceUtil.addStartAndEnd(param);
+        //业务逻辑
+        List<Map<String, Object>> dataList = paperMapper.findByTeacher(param);
+        int total = paperMapper.findByTeacherCount(param);
+        //打印参数
+        log.info("findByTeacher" + System.getProperty("line.separator") + "dataList={}" + System.getProperty("line.separator") + "total={}", dataList, total);
+        //生成结果
+        Map<String, Object> result = ServiceUtil.addTotalAndDatalist(dataList, total);
+        log.info("findByTeacher end ...");
+        return result;
     }
 
     /**
