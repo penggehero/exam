@@ -33,6 +33,47 @@
         );
     </insert>
 
+
+    <insert id="insertQuestion">
+        insert into t_question
+        (id, paper_id, number, name, flag, mark, q_A, q_B, q_C, q_D, answer)
+        values (null, #{paper_id}, #{number}, #{name}, #{flag}, #{mark}, #{q_A}, #{q_B}, #{q_C}, #{q_D}, #{answer});
+    </insert>
+
+    <update id="updateQuestion">
+        update t_question
+        set
+        name = #{name},
+        flag = #{flag},
+        mark = #{mark},
+        <if test="number!=null and number!=''">
+            number = #{number},
+        </if>
+        <if test="q_A!=null and q_A!=''">
+            q_A = #{q_A},
+        </if>
+        <if test="q_B!=null and q_B!=''">
+            q_B = #{q_B},
+        </if>
+        <if test="q_C!=null and q_C!=''">
+            q_C = #{q_C},
+        </if>
+        <if test="q_D!=null and q_D!=''">
+            q_D = #{q_D},
+        </if>
+        answer = #{answer}
+        where id = #{id};
+    </update>
+
+    <delete id="deleteQuestion">
+        delete from t_question
+        where id in
+        <foreach collection="list" item="item" index="index" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
     <select id="getQuestion" resultType="java.util.Map">
         select
         mark,
@@ -41,4 +82,37 @@
         t_question
         where id=#{id}
     </select>
+    <select id="search" resultType="java.util.Map">
+        select id, paper_id, number, name, flag, mark, q_A, q_B, q_C, q_D, answer
+        from t_question
+        <where>
+            <if test="paper_id!=null and paper_id!=''">
+                and paper_id=#{paper_id}
+            </if>
+            <if test="type!=null and type!=''">
+                and flag=#{type}
+            </if>
+        </where>
+        order by flag,number
+        LIMIT #{start},#{end};
+    </select>
+
+    <select id="searchCount" resultType="java.lang.Integer">
+        select count(0)
+        from t_question
+        <where>
+            <if test="paper_id!=null and paper_id!=''">
+                and paper_id=#{paper_id}
+            </if>
+            <if test="type!=null and type!=''">
+                and flag=#{type}
+            </if>
+        </where>
+    </select>
+
+    <select id="getQuestionByIdAndNum" resultType="java.lang.Integer">
+        select count(0) from t_question where paper_id =#{paper_id} and number=#{number}
+    </select>
+
+
 </mapper>

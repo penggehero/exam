@@ -30,6 +30,29 @@
         );
     </insert>
 
+    <update id="updateGrade">
+        UPDATE t_grade set
+        <if test="single_mark!=null and single_mark!=''">
+            single_mark=#{single_mark},
+        </if>
+        <if test="double_mark!=null and double_mark!=''">
+            double_mark=#{double_mark},
+        </if>
+        <if test="mark!=null and mark!=''">
+            mark=#{mark}
+        </if>
+        WHERE id=#{id};
+    </update>
+
+    <delete id="deleteGrade">
+        delete from t_grade
+        where id in
+        <foreach collection="list" item="item" index="index" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
     <select id="search" resultType="java.util.Map">
         select id, school_id, student_name, paper_id, paper_name, date, single_mark, double_mark, mark
         from t_grade where 1=1
@@ -38,6 +61,9 @@
         </if>
         <if test="paper_name!=null and paper_name!=''">
             and paper_name like concat('%', #{paper_name},'%')
+        </if>
+        <if test="student_name!=null and student_name!=''">
+            and student_name like concat('%', #{student_name},'%')
         </if>
         order by mark
         LIMIT #{start},#{end};

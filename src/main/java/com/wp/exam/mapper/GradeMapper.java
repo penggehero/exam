@@ -15,5 +15,4 @@ public interface GradeMapper {
 
     int searchCount(Map<String, Object> param);
 
-    int findbyConditionsCount(Map<String, Object> param);
 }

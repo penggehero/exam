@@ -31,15 +31,17 @@ public class GradeServiceImpl implements GradeService {
     @Override
     public Map<String, Object> deleteGrade(Map<String, Object> param) throws Exception {
         log.info("deleteGrade start ...{}", param);
+        gradeMapper.deleteGrade(param);
         log.info("deleteGrade end ...");
-        return null;
+        return ServiceUtil.makeResult(null,null);
     }
 
     @Override
     public Map<String, Object> updateGrade(Map<String, Object> param) throws Exception {
         log.info("updateGrade start ...{}", param);
+        gradeMapper.updateGrade(param);
         log.info("updateGrade end ...");
-        return null;
+        return ServiceUtil.makeResult(null,null);
     }
 
     @Override

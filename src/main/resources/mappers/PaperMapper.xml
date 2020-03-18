@@ -32,6 +32,34 @@
         where id=#{paper_id}
     </update>
 
+    <update id="updateDelQuestion">
+        update t_paper
+        set mark = mark - (select sum(mark)
+        from t_question
+        where id in
+        <foreach collection="list" item="item" index="index" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+        )
+        ,
+        number=number-#{number}
+        where id = #{paper_id};
+    </update>
+
+    <update id="updateAddQuestion">
+        update db_exam.t_paper
+        set mark=mark+#{mark},number=number+1
+        where id = #{paper_id};
+    </update>
+
+    <update id="updateQuestion">
+        update t_paper
+        set mark =(select sum(mark) from t_question where paper_id=#{paper_id}),
+        number = (select count(0) from t_question where paper_id=#{paper_id})
+        where id = #{paper_id}
+    </update>
+
     <select id="getQuestion" resultType="java.util.Map">
         select
         id,
@@ -47,6 +75,7 @@
         from
         t_question
         where paper_id=#{paper_id}
+        order by flag,number
     </select>
 
     <select id="getTimeAndName" resultType="java.util.Map">
@@ -77,7 +106,7 @@
     </select>
 
     <select id="findByTeacherCount" resultType="java.lang.Integer">
-         select count(0)
+        select count(0)
         from t_paper where 1=1
         <if test="name!=null and name!=''">
             and name like concat('%', #{name},'%')

@@ -9,6 +9,12 @@ public interface PaperMapper {
 
     void updatePaper(Map<String, Object> param);
 
+    void updateDelQuestion(Map<String, Object> param);
+
+    void updateQuestion(Map<String, Object> param);
+
+    void updateAddQuestion(Map<String, Object> param);
+
     List<Map<String, Object>> search(Map<String, Object> param);
 
     List<Map<String, Object>> findByTeacher(Map<String, Object> param);
