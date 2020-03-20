@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wp.exam.mapper.WrongQuestionMapper">
+
+
+    <insert id="addWrongQuestion">
+        insert into t_wrong_question
+        (id, question_id, paper_id, paper_name, school_id, number, name, flag, mark, q_A, q_B, q_C, q_D, answer,
+        wrong_answer)
+        values
+        (null , #{id}, #{paper_id}, #{paper_name}, #{school_id}, #{number}, #{name}, #{flag}, #{mark},
+        #{q_A}, #{q_B}, #{q_C}, #{q_D}, #{answer}, #{wrong_answer});
+    </insert>
+
+    <select id="search" resultType="java.util.Map">
+        select id, question_id, paper_id, paper_name, school_id, number, name, flag, mark, q_A, q_B, q_C, q_D, answer,
+        wrong_answer
+        from t_wrong_question
+        <where>
+            <if test="school_id!=null and school_id!=''">
+                 school_id=#{school_id}
+            </if>
+            <if test="type!=null and type!=''">
+                and flag=#{type}
+            </if>
+            <if test="paper_id!=null and paper_id!=''">
+                and paper_id=#{paper_id}
+            </if>
+        </where>
+        order by flag,number
+        LIMIT #{start},#{end};
+    </select>
+
+    <select id="searchCount" resultType="java.lang.Integer">
+        select count(0)
+        from t_wrong_question
+        where  school_id=#{school_id}
+    </select>
+
+    <select id="findPaperID" resultType="java.util.Map">
+        select DISTINCT paper_id
+        from t_wrong_question
+        where school_id=#{school_id}
+    </select>
+
+    <select id="findPaperNameById" resultType="java.util.Map">
+        select name
+        from t_paper
+        where id=#{paper_id}
+    </select>
+
+
+</mapper>

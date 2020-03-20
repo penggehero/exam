@@ -75,9 +75,7 @@
     </delete>
 
     <select id="getQuestion" resultType="java.util.Map">
-        select
-        mark,
-        answer
+        select id,paper_id, number, name, flag, mark, q_A, q_B, q_C, q_D, answer
         from
         t_question
         where id=#{id}
@@ -111,7 +109,7 @@
     </select>
 
     <select id="getQuestionByIdAndNum" resultType="java.lang.Integer">
-        select count(0) from t_question where paper_id =#{paper_id} and number=#{number}
+        select count(0) from t_question where paper_id =#{paper_id} and number=#{number} and flag=#{flag}
     </select>
 
 

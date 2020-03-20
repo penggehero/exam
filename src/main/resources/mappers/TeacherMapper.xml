@@ -26,25 +26,27 @@
     </insert>
 
     <update id="updateTeacher">
-        UPDATE t_teacher set
-        <if test="username!=null and username!=''">
-            username=#{username},
-        </if>
-        <if test="password!=null and password!=''">
-            password=#{password},
-        </if>
-        <if test="name!=null and name!=''">
-            name=#{name},
-        </if>
-        <if test="sex lt 2">
-            sex=#{sex},
-        </if>
-        <if test="work_id!=null and work_id!=''">
-            work_id=#{work_id},
-        </if>
-        <if test="college!=null and college!=''">
-            college=#{college}
-        </if>
+        UPDATE t_teacher
+        <set>
+            <if test="username!=null and username!=''">
+                username=#{username},
+            </if>
+            <if test="password!=null and password!=''">
+                password=#{password},
+            </if>
+            <if test="name!=null and name!=''">
+                name=#{name},
+            </if>
+            <if test="sex lt 2">
+                sex=#{sex},
+            </if>
+            <if test="work_id!=null and work_id!=''">
+                work_id=#{work_id},
+            </if>
+            <if test="college!=null and college!=''">
+                college=#{college}
+            </if>
+        </set>
         WHERE id=#{id};
     </update>
 
@@ -90,5 +92,19 @@
         <if test="work_id!=null and work_id!=''">
             and work_id like concat('%', #{work_id},'%')
         </if>
+    </select>
+
+    <select id="findByWorkId" resultType="java.util.Map">
+          select
+        id,
+        username,
+        password,
+        name,
+        sex,
+        work_id,
+        college
+        from
+        t_teacher
+        where work_id=#{work_id}
     </select>
 </mapper>

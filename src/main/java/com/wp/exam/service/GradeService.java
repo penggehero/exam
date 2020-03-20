@@ -6,9 +6,9 @@ public interface GradeService {
 
     Map<String, Object> addGrade(Map<String, Object> param) throws Exception;
 
-    Map<String, Object> deleteGrade(Map<String, Object> param) throws Exception;;
+    Map<String, Object> deleteGrade(Map<String, Object> param) throws Exception;
 
-    Map<String, Object> updateGrade(Map<String, Object> param) throws Exception;;
+    Map<String, Object> updateGrade(Map<String, Object> param) throws Exception;
 
     Map<String, Object> search(Map<String, Object> param) throws Exception;
 

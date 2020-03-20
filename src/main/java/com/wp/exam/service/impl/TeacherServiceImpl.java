@@ -80,4 +80,8 @@ public class TeacherServiceImpl implements TeacherService {
         return result;
     }
 
+    @Override
+    public Map<String, Object> searchPerson(Map<String, Object> param) throws Exception {
+        return teacherMapper.findByWorkId(param);
+    }
 }

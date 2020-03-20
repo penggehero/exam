@@ -3,6 +3,7 @@ package com.wp.exam.service.impl;
 import com.wp.exam.mapper.GradeMapper;
 import com.wp.exam.mapper.PaperMapper;
 import com.wp.exam.mapper.QuestionMapper;
+import com.wp.exam.mapper.WrongQuestionMapper;
 import com.wp.exam.service.PaperService;
 import com.wp.exam.util.ServiceUtil;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -31,6 +32,8 @@ public class PaperServiceImpl implements PaperService {
     private QuestionMapper questionMapper;
     @Autowired
     private GradeMapper gradeMapper;
+    @Autowired
+    private WrongQuestionMapper wrongQuestionMapper;
 
 
     private static final Logger log = LoggerFactory.getLogger(PaperServiceImpl.class);
@@ -269,13 +272,32 @@ public class PaperServiceImpl implements PaperService {
         log.info("submit start ...{}", param);
         int singleMark = 0;
         int dobleMark = 0;
+        int judgeMark = 0;
+        // 单选题
         List<String> singleList = (List<String>) param.get("single");
+        // 判断题
+        List<String> judgeList = (List<String>) param.get("judge");
+        // 多选题
         List<String> doubleList = (List<String>) param.get("double");
         for (String s : singleList) {
             String[] split = s.split("\\|");
             Map<String, Object> question = questionMapper.getQuestion(split[0]);
             if (split[1].equals(question.get("answer"))) {
                 singleMark += Integer.valueOf(question.get("mark").toString());
+            } else {
+                addParam(question, param, split);
+                wrongQuestionMapper.addWrongQuestion(question);
+
+            }
+        }
+        for (String s : judgeList) {
+            String[] split = s.split("\\|");
+            Map<String, Object> question = questionMapper.getQuestion(split[0]);
+            if (split[1].equals(question.get("answer"))) {
+                judgeMark += Integer.valueOf(question.get("mark").toString());
+            } else {
+                addParam(question, param, split);
+                wrongQuestionMapper.addWrongQuestion(question);
             }
         }
         for (String s : doubleList) {
@@ -284,11 +306,15 @@ public class PaperServiceImpl implements PaperService {
             String[] answers = question.get("answer").toString().split(",");
             if (isRight(split, answers)) {
                 dobleMark += Integer.valueOf(question.get("mark").toString());
+            } else {
+                addParam(question, param, split);
+                wrongQuestionMapper.addWrongQuestion(question);
             }
         }
         param.put("single_mark", singleMark);
         param.put("double_mark", dobleMark);
-        param.put("mark", singleMark + dobleMark);
+        param.put("judge_mark", judgeMark);
+        param.put("mark", singleMark + dobleMark + judgeMark);
         gradeMapper.addGrade(param);
         log.info("submit end ...");
         return ServiceUtil.makeResult(null, null);
@@ -328,6 +354,11 @@ public class PaperServiceImpl implements PaperService {
             if (j == split.length) return false;
         }
         return true;
+    }
+
+    public static void addParam(Map<String, Object> question, Map<String, Object> param, String[] str) {
+        question.putAll(param);
+        question.put("wrong_answer", str[1]);
     }
 
 }

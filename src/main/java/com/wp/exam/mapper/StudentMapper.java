@@ -14,4 +14,6 @@ public interface StudentMapper {
     List<Map<String, Object>> findbyConditions(Map<String, Object> param);
 
     int findbyConditionsCount(Map<String, Object> param);
+
+    Map<String, Object> findBySchoolId(Map<String, Object> param) throws Exception;
 }

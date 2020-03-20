@@ -15,6 +15,7 @@
         date,
         single_mark,
         double_mark,
+        judge_mark,
         mark
         )
         values
@@ -26,6 +27,7 @@
         now(),
         #{single_mark},
         #{double_mark},
+        #{judge_mark},
         #{mark}
         );
     </insert>
@@ -37,6 +39,9 @@
         </if>
         <if test="double_mark!=null and double_mark!=''">
             double_mark=#{double_mark},
+        </if>
+        <if test="judge_mark!=null and judge_mark!=''">
+            judge_mark=#{judge_mark},
         </if>
         <if test="mark!=null and mark!=''">
             mark=#{mark}
@@ -54,7 +59,7 @@
     </delete>
 
     <select id="search" resultType="java.util.Map">
-        select id, school_id, student_name, paper_id, paper_name, date, single_mark, double_mark, mark
+        select id, school_id, student_name, paper_id, paper_name, date, single_mark, double_mark,judge_mark, mark
         from t_grade where 1=1
         <if test="school_id!=null and school_id!=''">
             and school_id like concat('%', #{school_id},'%')

@@ -35,11 +35,16 @@ public class QuestionServiceImpl implements QuestionService {
         long start = System.currentTimeMillis();
         for (int i = 0; i < dataList.size(); i++) {
             String string = dataList.get(i).get("flag").toString();
-            if (string.equals("0")) {
+            if (string.equals("0"))
                 dataList.get(i).put("flag", "单选题");
-
-            } else if (string.equals("1")) {
+            else if (string.equals("1"))
                 dataList.get(i).put("flag", "多选题");
+            else if (string.equals("2")) {
+                dataList.get(i).put("flag", "判断题");
+                if (dataList.get(i).get("answer").toString().equals("0"))
+                    dataList.get(i).put("answer", "错");
+                else if (dataList.get(i).get("answer").toString().equals("1"))
+                    dataList.get(i).put("answer", "对");
             }
         }
         long end = System.currentTimeMillis();

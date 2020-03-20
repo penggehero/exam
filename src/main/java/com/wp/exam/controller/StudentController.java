@@ -31,6 +31,22 @@ public class StudentController {
     }
 
     /**
+     * 获取学生个人信息
+     * @param param
+     * @return
+     */
+    @GetMapping("/searchPerson")
+    public Map<String, Object> searchPerson(@RequestParam Map<String, Object> param) {
+        try {
+            result = ServiceUtil.makeResult(studentService.searchPerson(param), null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = ServiceUtil.makeResult(null, ServiceUtil.UNKNOWNERROR);
+        }
+        return result;
+    }
+
+    /**
      * 添加学生
      * @param param
      * @return

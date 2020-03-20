@@ -30,31 +30,33 @@
     </insert>
 
     <update id="updateStudent">
-        UPDATE t_student set
-        <if test="username!=null and username!=''">
-            username=#{username},
-        </if>
-        <if test="password!=null and password!=''">
-            password=#{password},
-        </if>
-        <if test="name!=null and name!=''">
-            name=#{name},
-        </if>
-        <if test="sex lt 2">
-            sex=#{sex},
-        </if>
-        <if test="school_id!=null and school_id!=''">
-            school_id=#{school_id},
-        </if>
-        <if test="college!=null and college!=''">
-            college=#{college},
-        </if>
-        <if test="major!=null and major!=''">
-            major=#{major},
-        </if>
-        <if test="grade!=null and grade!=''">
-            grade=#{grade}
-        </if>
+        UPDATE t_student
+        <set>
+            <if test="username!=null and username!=''">
+                username=#{username},
+            </if>
+            <if test="password!=null and password!=''">
+                password=#{password},
+            </if>
+            <if test="name!=null and name!=''">
+                name=#{name},
+            </if>
+            <if test="sex lt 2">
+                sex=#{sex},
+            </if>
+            <if test="school_id!=null and school_id!=''">
+                school_id=#{school_id},
+            </if>
+            <if test="college!=null and college!=''">
+                college=#{college},
+            </if>
+            <if test="major!=null and major!=''">
+                major=#{major},
+            </if>
+            <if test="grade!=null and grade!=''">
+                grade=#{grade}
+            </if>
+        </set>
         WHERE id=#{id};
     </update>
 
@@ -102,5 +104,11 @@
         <if test="school_id!=null and school_id!=''">
             and school_id like concat('%', #{school_id},'%')
         </if>
+    </select>
+
+    <select id="findBySchoolId" resultType="java.util.Map">
+        select id, username, password, name, sex, school_id, college, major, grade
+        from t_student
+        where school_id=#{school_id};
     </select>
 </mapper>
