@@ -42,6 +42,11 @@ public class WrongServiceImpl implements WrongService {
                     dataList.get(i).put("answer", "错");
                 else if (dataList.get(i).get("answer").toString().equals("1"))
                     dataList.get(i).put("answer", "对");
+
+                if (dataList.get(i).get("wrong_answer").toString().equals("0"))
+                    dataList.get(i).put("wrong_answer", "错");
+                else if (dataList.get(i).get("wrong_answer").toString().equals("1"))
+                    dataList.get(i).put("wrong_answer", "对");
             }
         }
         //打印参数

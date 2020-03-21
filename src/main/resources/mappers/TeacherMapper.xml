@@ -37,7 +37,7 @@
             <if test="name!=null and name!=''">
                 name=#{name},
             </if>
-            <if test="sex lt 2">
+            <if test="sex!=null and sex lt 2">
                 sex=#{sex},
             </if>
             <if test="work_id!=null and work_id!=''">

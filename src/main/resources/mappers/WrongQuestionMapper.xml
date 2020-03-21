@@ -36,7 +36,17 @@
     <select id="searchCount" resultType="java.lang.Integer">
         select count(0)
         from t_wrong_question
-        where  school_id=#{school_id}
+        <where>
+            <if test="school_id!=null and school_id!=''">
+                school_id=#{school_id}
+            </if>
+            <if test="type!=null and type!=''">
+                and flag=#{type}
+            </if>
+            <if test="paper_id!=null and paper_id!=''">
+                and paper_id=#{paper_id}
+            </if>
+        </where>
     </select>
 
     <select id="findPaperID" resultType="java.util.Map">

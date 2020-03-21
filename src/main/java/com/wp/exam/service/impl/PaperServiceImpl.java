@@ -20,6 +20,7 @@ import org.springframework.util.StringUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.*;
 
 @Service
@@ -42,28 +43,32 @@ public class PaperServiceImpl implements PaperService {
     private static POIFSFileSystem poifsFileSystem = null;
     private static HSSFWorkbook workbook = null;
     private static HashSet<String> strings = new HashSet<>();
+    private static HashSet<String> judgestrings = new HashSet<>();
 
     static {
         strings.add("A");
         strings.add("C");
         strings.add("D");
         strings.add("B");
+        judgestrings.add("对");
+        judgestrings.add("错");
     }
 
     @Override
-    public Map<String, Object> importPaper(File file, Map<String, Object> param) throws Exception {
+    public Map<String, Object> importPaper(InputStream inputStream, Map<String, Object> param) throws Exception {
         log.info("importPaper start ...{}", param);
 
         //插入试题
         int snumber = 0;
         int smark = 0;
+        int jnumber = 0;
+        int jmark = 0;
         int dnumber = 0;
         int dmark = 0;
         paperMapper.importPaper(param);
         //试卷编号
         String paper_id = param.get("id").toString();
         try {
-            inputStream = new FileInputStream(file);
             poifsFileSystem = new POIFSFileSystem(inputStream);
             workbook = new HSSFWorkbook(poifsFileSystem);
             HSSFSheet sSheet = workbook.getSheet("单选题");
@@ -131,6 +136,55 @@ public class PaperServiceImpl implements PaperService {
                 //插入试题
                 questionMapper.importQuestion(single);
             }
+
+            HSSFSheet jSheet = workbook.getSheet("判断题");
+            if (jSheet == null)
+                throw new RuntimeException("文件格式错误!");
+
+            //遍历行row
+            for (int rowNum = 1; rowNum <= jSheet.getLastRowNum(); rowNum++) {
+                HSSFRow hssfRow = jSheet.getRow(rowNum);
+                if (hssfRow == null) continue;
+                HashMap<String, Object> judge = new HashMap<>();
+                //设置id和单选标志
+                judge.put("paper_id", paper_id);
+                judge.put("flag", 2);
+                //遍历列cell
+                for (int rowCell = 0; rowCell < hssfRow.getLastCellNum(); rowCell++) {
+                    HSSFCell hssfCell = hssfRow.getCell(rowCell);
+                    if (rowCell == 0) {
+                        //题号
+                        if (hssfCell.getNumericCellValue() == 0)
+                            throw new RuntimeException("题号为空!");
+                        judge.put("number", hssfCell.getNumericCellValue());
+                        jnumber++;
+                    } else if (rowCell == 1) {
+                        //分值
+                        if (hssfCell.getNumericCellValue() == 0)
+                            throw new RuntimeException("分值为空!");
+                        judge.put("mark", hssfCell.getNumericCellValue());
+                        jmark += hssfCell.getNumericCellValue();
+                    } else if (rowCell == 2) {
+                        //题目描述
+                        if (StringUtils.isEmpty(hssfCell.getStringCellValue()))
+                            throw new RuntimeException("题目描述为空!");
+                        judge.put("name", hssfCell.getStringCellValue());
+                    } else if (rowCell == 3) {
+                        //正确答案
+                        if (StringUtils.isEmpty(hssfCell.getStringCellValue()))
+                            throw new RuntimeException("正确答案为空!");
+                        if (!judgestrings.contains(hssfCell.getStringCellValue()))
+                            throw new RuntimeException("正确答案格式不正确");
+                        Integer answer=hssfCell.getStringCellValue().equals("对")?1:0;
+                        judge.put("answer", answer);
+                    } else {
+                        throw new RuntimeException("超出长度!");
+                    }
+                }
+                //插入试题
+                questionMapper.importQuestion(judge);
+            }
+
 
             HSSFSheet dSheet = workbook.getSheet("多选题");
             if (dSheet == null)
@@ -221,13 +275,15 @@ public class PaperServiceImpl implements PaperService {
         }
         System.out.println("单选题有" + snumber + "道");
         System.out.println("单选题有" + smark + "分");
+        System.out.println("判断题有" + jnumber + "道");
+        System.out.println("判断题有" + jmark + "分");
         System.out.println("多选题有" + dnumber + "道");
         System.out.println("多选题有" + dmark + "分");
-        System.out.println("总共有" + (snumber + dnumber) + "道");
-        System.out.println("总分:" + (smark + dmark) + "分");
+        System.out.println("总共有" + (snumber + dnumber + jnumber) + "道");
+        System.out.println("总分:" + (smark + dmark + jmark) + "分");
         HashMap<String, Object> update = new HashMap<>();
-        update.put("number", snumber + dnumber);
-        update.put("mark", smark + dmark);
+        update.put("number", snumber + dnumber + jnumber);
+        update.put("mark", smark + dmark + jmark);
         update.put("paper_id", paper_id);
         paperMapper.updatePaper(update);
         log.info("importPaper end ...");

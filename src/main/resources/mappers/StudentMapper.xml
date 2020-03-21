@@ -41,7 +41,7 @@
             <if test="name!=null and name!=''">
                 name=#{name},
             </if>
-            <if test="sex lt 2">
+            <if test="sex!=null and sex lt 2">
                 sex=#{sex},
             </if>
             <if test="school_id!=null and school_id!=''">
