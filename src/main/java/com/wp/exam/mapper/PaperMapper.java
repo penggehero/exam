@@ -23,6 +23,8 @@ public interface PaperMapper {
 
     int findByTeacherCount(Map<String, Object> param);
 
+    Map<String, Object> findById(Map<String, Object> param);
+
 
     List<Map<String, Object>> getQuestion(Map<String, Object> param) throws Exception;
 

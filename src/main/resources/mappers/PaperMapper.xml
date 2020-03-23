@@ -116,4 +116,10 @@
         </if>
     </select>
 
+    <select id="findById" resultType="java.util.Map">
+        select id, name, mark, number, time, teacher_id, teacher, ext
+        from t_paper
+        where id=#{paper_id}
+    </select>
+
 </mapper>

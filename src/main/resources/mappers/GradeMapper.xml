@@ -80,8 +80,26 @@
         <if test="school_id!=null and school_id!=''">
             and school_id like concat('%', #{school_id},'%')
         </if>
+        <if test="paper_id!=null and paper_id!=''">
+            and paper_id = #{paper_id}
+        </if>
         <if test="paper_name!=null and paper_name!=''">
             and paper_name like concat('%', #{paper_name},'%')
         </if>
+    </select>
+
+    <select id="analysis" resultType="java.util.Map">
+        select
+        avg(single_mark),min(single_mark),max(single_mark),
+        avg(double_mark),min(double_mark),max(double_mark),
+        avg(judge_mark),min(judge_mark),max(judge_mark),
+        avg(mark),min(mark),max(mark)
+        from t_grade where paper_id=#{paper_id}
+    </select>
+
+    <select id="CountBetween" resultType="java.lang.Integer">
+        select count(0)
+        from t_grade
+        where mark between #{start} and #{end};
     </select>
 </mapper>

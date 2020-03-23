@@ -15,4 +15,8 @@ public interface GradeMapper {
 
     int searchCount(Map<String, Object> param);
 
+   Map<String, Object> analysis(Map<String, Object> param);
+
+   int CountBetween(Map<String, Object> param);
+
 }
