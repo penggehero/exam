@@ -13,6 +13,8 @@ public interface WrongQuestionMapper {
 
     Map<String, Object> findPaperNameById(Map<String, Object> param);
 
+    int countWrony(Map<String, Object> param);
+
     int searchCount(Map<String, Object> param);
 
 }

@@ -20,7 +20,7 @@
         from t_wrong_question
         <where>
             <if test="school_id!=null and school_id!=''">
-                 school_id=#{school_id}
+                school_id=#{school_id}
             </if>
             <if test="type!=null and type!=''">
                 and flag=#{type}
@@ -59,6 +59,10 @@
         select name
         from t_paper
         where id=#{paper_id}
+    </select>
+
+    <select id="countWrony" resultType="java.lang.Integer">
+        select count(0) from t_wrong_question where paper_id=#{paper_id} and question_id=#{id}
     </select>
 
 

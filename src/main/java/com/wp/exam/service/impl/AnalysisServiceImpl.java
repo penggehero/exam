@@ -1,15 +1,17 @@
 package com.wp.exam.service.impl;
 
-import com.wp.exam.mapper.GradeMapper;
-import com.wp.exam.mapper.PaperMapper;
-import com.wp.exam.mapper.StudentMapper;
+import com.wp.exam.mapper.*;
 import com.wp.exam.service.AnalysisService;
+import com.wp.exam.util.ServiceUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.*;
 
 @Service
@@ -24,10 +26,11 @@ public class AnalysisServiceImpl implements AnalysisService {
     private GradeMapper gradeMapper;
     @Autowired
     private PaperMapper paperMapper;
+    @Autowired
+    private WrongQuestionMapper wrongQuestionMapper;
 
     @Override
     public Map<String, Object> grade(Map<String, Object> param) throws Exception {
-        long start = System.currentTimeMillis();
         log.info("AnalysisServiceImpl grade start ...{}", param);
         Map<String, Object> result = new HashMap<>();
         result.put("DoneList", MakeResult1(studentMapper.findbyConditionsCount(param), gradeMapper.searchCount(param)));
@@ -42,24 +45,77 @@ public class AnalysisServiceImpl implements AnalysisService {
             areaList.add(markArea);
         }
         result.put("AreaList", areaList);
-        System.out.println("AnalysisServiceImpl grade 消耗时间为" + (System.currentTimeMillis() - start));
         log.info("AnalysisServiceImpl grade end ...");
         return result;
     }
 
+    /**
+     * 错误率计算 出错题目数量/完成次数
+     *
+     * @param param
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public Map<String, Object> wrong(Map<String, Object> param) throws Exception {
+        log.info("AnalysisServiceImpl wrong start ...{}", param);
+        int done = gradeMapper.searchCount(param);
+        List<Map<String, Object>> question = paperMapper.getQuestion(param);
+        if (done > 0) {
+            for (Map<String, Object> map : question) {
+                int wrongNum = wrongQuestionMapper.countWrony(map);
+                map.put("wrongNum", wrongNum);
+                // if (done)
+                map.put("wrong", percentFormat(wrongNum, done));
+            }
+            // 对错误率排序
+            Collections.sort(question, (s1, s2) -> s2.get("wrongNum").toString().compareTo(s1.get("wrongNum").toString()));
+        } else {
+            for (Map<String, Object> map : question) {
+                map.put("wrong", "0%");
+                map.put("wrongNum", 0);
+            }
+        }
+        //前端数据转换
+        ServiceUtil.WebFormat(question);
+        log.info("AnalysisServiceImpl wrong end ...");
+        return ServiceUtil.makeResult(question, null);
+    }
+
+    /**
+     * 百分比转换
+     *
+     * @param x
+     * @param y
+     * @return
+     */
+    public static String percentFormat(int x, int y) {
+        return new DecimalFormat("#.##%").format((double) x / y);
+    }
+
+    /**
+     * 获取考试完成情况
+     *
+     * @param studentNumber
+     * @param doneNumber
+     * @return
+     */
     public static List<Map<String, Object>> MakeResult1(int studentNumber, int doneNumber) {
         Map<String, Object> done = new LinkedHashMap<>();
         Map<String, Object> notdone = new LinkedHashMap<>();
         done.put("完成情况", "已完成人数");
         done.put("人数", doneNumber);
         notdone.put("完成情况", "未完成人数");
-        notdone.put("人数", studentNumber - doneNumber);
-        List<Map<String, Object>> list = new ArrayList<>();
-        list.add(done);
-        list.add(notdone);
-        return list;
+        notdone.put("人数", studentNumber - doneNumber > 0 ? studentNumber - doneNumber : 0);
+        return Arrays.asList(done, notdone);
     }
 
+    /**
+     * 各题型最低最高平均分
+     *
+     * @param analysis
+     * @return
+     */
     public static List<Map<String, Object>> MakeResult2(Map<String, Object> analysis) {
         Map<String, Object> min = new LinkedHashMap<>();
         Map<String, Object> max = new LinkedHashMap<>();
@@ -81,19 +137,19 @@ public class AnalysisServiceImpl implements AnalysisService {
         avg.put("多选题", analysis.get("avg(double_mark)"));
         avg.put("判断题", analysis.get("avg(judge_mark)"));
         avg.put("总分", analysis.get("avg(mark)"));
-        List<Map<String, Object>> list = new ArrayList<>();
-        list.add(min);
-        list.add(max);
-        list.add(avg);
-        return list;
+        return Arrays.asList(min, max, avg);
     }
 
+    /***
+     * 各考试分段人数
+     * @param param
+     * @return
+     */
     public static List<Map<String, Object>> MakeResult3(Map<String, Object> param) {
         int mark = Integer.valueOf(param.get("mark").toString());
         List<Map<String, Object>> list = new LinkedList<>();
-        int start = 0;
         int temp = mark % 20 == 0 ? mark / 20 : mark / 20 + 1;
-        for (int i = 0; i < temp; i++, start += 20) {
+        for (int i = 0, start = 0; i < temp; i++, start += 20) {
             Map<String, Object> map = new HashMap<>();
             if (i == 0) {
                 map.put("start", start);
@@ -108,6 +164,5 @@ public class AnalysisServiceImpl implements AnalysisService {
             list.add(map);
         }
         return list;
-
     }
 }

@@ -30,25 +30,7 @@ public class WrongServiceImpl implements WrongService {
         List<Map<String, Object>> dataList = wrongQuestionMapper.search(param);
         int total = wrongQuestionMapper.searchCount(param);
         //前端数据转换
-        for (int i = 0; i < dataList.size(); i++) {
-            String string = dataList.get(i).get("flag").toString();
-            if (string.equals("0"))
-                dataList.get(i).put("flag", "单选题");
-            else if (string.equals("1"))
-                dataList.get(i).put("flag", "多选题");
-            else if (string.equals("2")) {
-                dataList.get(i).put("flag", "判断题");
-                if (dataList.get(i).get("answer").toString().equals("0"))
-                    dataList.get(i).put("answer", "错");
-                else if (dataList.get(i).get("answer").toString().equals("1"))
-                    dataList.get(i).put("answer", "对");
-
-                if (dataList.get(i).get("wrong_answer").toString().equals("0"))
-                    dataList.get(i).put("wrong_answer", "错");
-                else if (dataList.get(i).get("wrong_answer").toString().equals("1"))
-                    dataList.get(i).put("wrong_answer", "对");
-            }
-        }
+        ServiceUtil.WebFormat(dataList);
         //打印参数
         log.info("WrongServiceImpl search" + System.getProperty("line.separator") + "dataList={}" + System.getProperty("line.separator") + "total={}", dataList, total);
         //生成结果

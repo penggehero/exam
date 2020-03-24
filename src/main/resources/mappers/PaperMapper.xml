@@ -71,7 +71,8 @@
         q_A,
         q_B,
         q_C,
-        q_D
+        q_D,
+        answer
         from
         t_question
         where paper_id=#{paper_id}

@@ -26,4 +26,15 @@ public class AnalysisController {
         }
         return result;
     }
+
+    @GetMapping("/wrong")
+    public Map<String, Object> wrong(@RequestParam Map<String, Object> param) {
+        try {
+            result = analysisService.wrong(param);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = ServiceUtil.makeResult(null, ServiceUtil.UNKNOWNERROR);
+        }
+        return result;
+    }
 }
