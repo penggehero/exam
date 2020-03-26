@@ -37,13 +37,13 @@ public class AnalysisServiceImpl implements AnalysisService {
         result.put("AVGList", MakeResult2(gradeMapper.analysis(param)));
         List<Map<String, Object>> areaList = new LinkedList<>();
         StringBuilder sb = new StringBuilder();
-        for (Map<String, Object> map : MakeResult3(paperMapper.findById(param))) {
+        MakeResult3(paperMapper.findById(param)).forEach(map -> {
             HashMap<String, Object> markArea = new HashMap<>();
             markArea.put("MarkArea", sb.append(map.get("start")).append("-").append(map.get("end")).append("分").toString());
             sb.setLength(0);
             markArea.put("StudentNumber", gradeMapper.CountBetween(map));
             areaList.add(markArea);
-        }
+        });
         result.put("AreaList", areaList);
         log.info("AnalysisServiceImpl grade end ...");
         return result;
@@ -62,19 +62,18 @@ public class AnalysisServiceImpl implements AnalysisService {
         int done = gradeMapper.searchCount(param);
         List<Map<String, Object>> question = paperMapper.getQuestion(param);
         if (done > 0) {
-            for (Map<String, Object> map : question) {
+            question.forEach(map -> {
                 int wrongNum = wrongQuestionMapper.countWrony(map);
                 map.put("wrongNum", wrongNum);
-                // if (done)
                 map.put("wrong", percentFormat(wrongNum, done));
-            }
+            });
             // 对错误率排序
-            Collections.sort(question, (s1, s2) -> s2.get("wrongNum").toString().compareTo(s1.get("wrongNum").toString()));
+            Collections.sort(question, Comparator.comparing(s -> Integer.parseInt(s.get("wrongNum").toString()), Comparator.reverseOrder()));
         } else {
-            for (Map<String, Object> map : question) {
+            question.forEach(map -> {
                 map.put("wrong", "0%");
                 map.put("wrongNum", 0);
-            }
+            });
         }
         //前端数据转换
         ServiceUtil.WebFormat(question);
