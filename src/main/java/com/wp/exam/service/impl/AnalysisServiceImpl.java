@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.*;
 
 @Service
@@ -32,6 +30,7 @@ public class AnalysisServiceImpl implements AnalysisService {
     @Override
     public Map<String, Object> grade(Map<String, Object> param) throws Exception {
         log.info("AnalysisServiceImpl grade start ...{}", param);
+        long start = System.currentTimeMillis();
         Map<String, Object> result = new HashMap<>();
         result.put("DoneList", MakeResult1(studentMapper.findbyConditionsCount(param), gradeMapper.searchCount(param)));
         result.put("AVGList", MakeResult2(gradeMapper.analysis(param)));
@@ -45,6 +44,7 @@ public class AnalysisServiceImpl implements AnalysisService {
             areaList.add(markArea);
         });
         result.put("AreaList", areaList);
+        System.out.println("总耗时： " + (System.currentTimeMillis() - start));
         log.info("AnalysisServiceImpl grade end ...");
         return result;
     }
@@ -59,6 +59,7 @@ public class AnalysisServiceImpl implements AnalysisService {
     @Override
     public Map<String, Object> wrong(Map<String, Object> param) throws Exception {
         log.info("AnalysisServiceImpl wrong start ...{}", param);
+        long start = System.currentTimeMillis();
         int done = gradeMapper.searchCount(param);
         List<Map<String, Object>> question = paperMapper.getQuestion(param);
         if (done > 0) {
@@ -68,7 +69,7 @@ public class AnalysisServiceImpl implements AnalysisService {
                 map.put("wrong", percentFormat(wrongNum, done));
             });
             // 对错误率排序
-            Collections.sort(question, Comparator.comparing(s -> Integer.parseInt(s.get("wrongNum").toString()), Comparator.reverseOrder()));
+            Collections.sort(question, Comparator.comparing(s -> (int) s.get("wrongNum"), Comparator.reverseOrder()));
         } else {
             question.forEach(map -> {
                 map.put("wrong", "0%");
@@ -77,6 +78,7 @@ public class AnalysisServiceImpl implements AnalysisService {
         }
         //前端数据转换
         ServiceUtil.WebFormat(question);
+        System.out.println("总耗时： " + (System.currentTimeMillis() - start));
         log.info("AnalysisServiceImpl wrong end ...");
         return ServiceUtil.makeResult(question, null);
     }
@@ -100,8 +102,8 @@ public class AnalysisServiceImpl implements AnalysisService {
      * @return
      */
     public static List<Map<String, Object>> MakeResult1(int studentNumber, int doneNumber) {
-        Map<String, Object> done = new LinkedHashMap<>();
-        Map<String, Object> notdone = new LinkedHashMap<>();
+        Map<String, Object> done = new HashMap<>();
+        Map<String, Object> notdone = new HashMap<>();
         done.put("完成情况", "已完成人数");
         done.put("人数", doneNumber);
         notdone.put("完成情况", "未完成人数");
@@ -116,9 +118,9 @@ public class AnalysisServiceImpl implements AnalysisService {
      * @return
      */
     public static List<Map<String, Object>> MakeResult2(Map<String, Object> analysis) {
-        Map<String, Object> min = new LinkedHashMap<>();
-        Map<String, Object> max = new LinkedHashMap<>();
-        Map<String, Object> avg = new LinkedHashMap<>();
+        Map<String, Object> min = new HashMap<>();
+        Map<String, Object> max = new HashMap<>();
+        Map<String, Object> avg = new HashMap<>();
         min.put("Type", "最低分");
         min.put("单选题", analysis.get("min(single_mark)"));
         min.put("多选题", analysis.get("min(double_mark)"));
