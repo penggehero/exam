@@ -118,6 +118,7 @@ public class AnalysisServiceImpl implements AnalysisService {
      * @return
      */
     public static List<Map<String, Object>> MakeResult2(Map<String, Object> analysis) {
+        if (analysis==null) return Collections.emptyList();
         Map<String, Object> min = new HashMap<>();
         Map<String, Object> max = new HashMap<>();
         Map<String, Object> avg = new HashMap<>();
